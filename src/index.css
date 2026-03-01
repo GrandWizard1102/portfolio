@@ -1,0 +1,60 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+/* Add this to your global CSS to override any default smooth scrolling */
+html {
+  scroll-behavior: auto !important;
+}
+@theme {
+  @keyframes pop-up {
+    0% {
+      transform: scale(0.5);
+      opacity: 0;
+    }
+    80% {
+      transform: scale(1.05);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  --animate-pop-up: pop-up 0.5s ease-out forwards;
+  @keyframes fade-up {
+    0% {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  --animate-fade-up: fade-up 0.2s ease-out forwards;
+
+  @keyframes typing {
+    from {
+      max-width: 0;
+      opacity: 1;
+    } /* opacity: 1 ensures it shows up when typing starts */
+    to {
+      max-width: 100ch;
+      opacity: 1;
+    }
+  }
+  @keyframes blink {
+    50% {
+      border-color: transparent;
+    }
+  }
+
+  --animate-typing:
+    typing 3.5s steps(40, end) forwards, blink 0.75s step-end infinite;
+}
+[class*="animate-fade-up"],
+[class*="animate-typing"] {
+  opacity: 0;
+}
