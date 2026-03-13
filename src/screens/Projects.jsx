@@ -8,8 +8,9 @@ const projects = [
     description:
       "Official symposium website for the Department of Information Technology - AI & DS branch, MIT Anna University. Features event registration and real-time updates.",
     tags: ["React", "Tailwind", "Production"],
-    size: "large", // Making this large since it's a live site
-    link: "https://tekhora26.live",
+    size: "large",
+    github: "https://github.com/Gojo-Satoru-git/AIA_SYMPO", // Add your repo link here
+    live: "https://tekhora26.live",
   },
   {
     id: 2,
@@ -18,7 +19,8 @@ const projects = [
       "Visual-to-Audio Scene Describer for the visually impaired using Deep Learning and CV.",
     tags: ["Computer Vision", "Python", "Deep Learning"],
     size: "small",
-    link: "", // Coming soon
+    github: "",
+    live: "", // Both empty triggers "Coming Soon"
   },
   {
     id: 3,
@@ -27,7 +29,8 @@ const projects = [
       "Real-time threat detection system using HOG features and Flask deployment.",
     tags: ["ML", "OpenCV"],
     size: "small",
-    link: "https://github.com/GrandWizard1102/Weapon-Detection",
+    github: "https://github.com/GrandWizard1102/Weapon-Detection",
+    live: "", // Only GitHub link
   },
   {
     id: 4,
@@ -36,7 +39,9 @@ const projects = [
       "Automated complaint tracking system built with the MERN stack.",
     tags: ["MERN Stack", "AI"],
     size: "small",
-    link: "https://github.com/GrandWizard1102/Smart-Grievance-redressal-system",
+    github:
+      "https://github.com/GrandWizard1102/Smart-Grievance-redressal-system",
+    live: "", // Only GitHub link
   },
 ];
 
@@ -50,31 +55,21 @@ const Projects = forwardRef((props, ref) => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pointer-events-auto">
           {projects.map((project, index) => {
-            const isComingSoon = !project.link;
-
-            // We wrap the content in a Link if it exists, otherwise it's just a div
-            const Wrapper = isComingSoon ? "div" : "a";
+            const isComingSoon = !project.github && !project.live;
+            const primaryLink = project.live || project.github;
 
             return (
-              <Wrapper
+              <div
                 key={index}
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`group relative rounded-[2rem] overflow-hidden transition-all duration-500 ${
-                  isComingSoon
-                    ? "cursor-default"
-                    : "hover:-translate-y-2 cursor-pointer"
+                className={`group relative rounded-[2rem] overflow-hidden transition-all duration-500 bg-white/[0.03] backdrop-blur-2xl border border-white/10 hover:border-purple-500/50 ${
+                  isComingSoon ? "cursor-default" : "hover:-translate-y-2"
                 } ${
                   project.size === "large" ? "md:col-span-2" : "md:col-span-1"
                 }`}
               >
-                {/* GLASS INTERFACE LAYERS */}
-                <div className="absolute inset-0 bg-white/[0.03] backdrop-blur-2xl z-0" />
-                <div className="absolute inset-0 border border-white/10 rounded-[2rem] z-20 group-hover:border-purple-500/50 transition-colors" />
-
-                {/* Content */}
-                <div className="relative z-10 p-8 md:p-10 flex flex-col h-full min-h-[350px]">
+                {/* Content Container */}
+                <div className="relative z-10 p-8 md:p-10 flex flex-col h-full min-h-[380px]">
+                  {/* Top Bar: Tags and Action Icons */}
                   <div className="flex justify-between items-start mb-6">
                     <div className="flex flex-wrap gap-3">
                       {project.tags.map((tag) => (
@@ -86,14 +81,35 @@ const Projects = forwardRef((props, ref) => {
                         </span>
                       ))}
                     </div>
-                    {!isComingSoon && (
-                      <Github
-                        className="text-white/30 group-hover:text-purple-500 transition-colors"
-                        size={20}
-                      />
-                    )}
+
+                    {/* Action Icons */}
+                    <div className="flex gap-4">
+                      {project.github && (
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-white/30 hover:text-purple-500 transition-colors"
+                          aria-label="GitHub Repository"
+                        >
+                          <Github size={22} />
+                        </a>
+                      )}
+                      {project.live && (
+                        <a
+                          href={project.live}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-white/30 hover:text-purple-500 transition-colors"
+                          aria-label="Live Demo"
+                        >
+                          <ExternalLink size={22} />
+                        </a>
+                      )}
+                    </div>
                   </div>
 
+                  {/* Text Content */}
                   <div className="mt-auto">
                     <h3 className="text-3xl font-bold text-white mb-4 leading-tight">
                       {project.title}
@@ -102,24 +118,32 @@ const Projects = forwardRef((props, ref) => {
                       {project.description}
                     </p>
 
-                    <div className="flex items-center gap-2 text-white font-bold group/link">
-                      <span
-                        className={`${isComingSoon ? "text-gray-600" : "group-hover/link:text-purple-400"} transition-colors uppercase text-xs tracking-widest`}
+                    {/* Bottom Link Button */}
+                    {isComingSoon ? (
+                      <div className="flex items-center gap-2 text-gray-600 font-bold uppercase text-xs tracking-widest">
+                        <span>Coming Soon</span>
+                      </div>
+                    ) : (
+                      <a
+                        href={primaryLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-white font-bold group/link inline-flex"
                       >
-                        {isComingSoon ? "Coming Soon" : "View Project"}
-                      </span>
-                      {!isComingSoon && (
+                        <span className="group-hover/link:text-purple-400 transition-colors uppercase text-xs tracking-widest">
+                          {project.live ? "View Live Site" : "View Source Code"}
+                        </span>
                         <div className="w-8 h-[2px] bg-purple-500 transition-all group-hover/link:w-12" />
-                      )}
-                    </div>
+                      </a>
+                    )}
                   </div>
                 </div>
 
-                {/* Interactive Hover Glow */}
+                {/* Hover Glow Effect */}
                 {!isComingSoon && (
                   <div className="absolute -inset-full bg-gradient-to-br from-purple-600/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                 )}
-              </Wrapper>
+              </div>
             );
           })}
         </div>
