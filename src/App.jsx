@@ -1,10 +1,12 @@
 import { useEffect, useState, useRef } from "react";
-import reactLogo from "./assets/react.svg";
+import reactLogo from "./assets/logo.png";
 import CardNav from "./components/CardNav";
 import GradientBlinds from "./components/GradientBlinds";
 import Home from "./screens/Home";
 import About from "./screens/About";
 import Skills from "./screens/Skills";
+import Projects from "./screens/Projects";
+import Footer from "./components/Footer";
 
 function App() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -12,6 +14,8 @@ function App() {
   const HomeRef = useRef(null);
   const AboutRef = useRef(null);
   const SkillRef = useRef(null);
+  const ProjectRef = useRef(null);
+  const ContactRef = useRef(null);
 
   const scrollTo = (elementRef) => {
     if (elementRef.current) {
@@ -62,9 +66,37 @@ function App() {
       label: "Projects",
       bgColor: "#aa5ef5",
       textColor: "#fff",
+      onClick: () => {
+        scrollTo(ProjectRef);
+      },
+    },
+    {
+      label: "Contact",
+      bgColor: "#aa5ef5",
+      textColor: "#fff",
+      onClick: () => {
+        scrollTo(ContactRef);
+      },
     },
   ];
-
+  const updateFavicon = (logoPath) => {
+    const link = document.querySelector("link[rel~='icon']");
+    if (link) {
+      link.href = logoPath;
+    } else {
+      // If no icon link exists, create one
+      const newLink = document.createElement("link");
+      newLink.rel = "icon";
+      newLink.href = logoPath;
+      document.head.appendChild(newLink);
+    }
+  };
+  const Projects = () => {
+    useEffect(() => {
+      document.title = "Kavimani V";
+      updateFavicon(reactLogo);
+    }, []);
+  };
   return (
     // min-h-screen allows the page to grow beyond the first fold
     <div className="relative w-full min-h-screen bg-black overflow-x-hidden">
@@ -98,18 +130,27 @@ function App() {
             buttonBgColor="#aa5ef5"
             buttonTextColor="#fff"
             ease="power3.out"
-            theme="dark"
+            theme="light"
           />
         </div>
       </header>
 
       {/* 3. SCROLLABLE CONTENT: This is where Home lives */}
+      {/* Inside App.js main */}
       <main className="relative z-10 w-full pointer-events-none">
-        <Home ref={HomeRef} />
+        {/* Pass the function correctly */}
+        <Home
+          ref={HomeRef}
+          onclick1={() => scrollTo(ProjectRef)}
+          onclick2={() => scrollTo(ContactRef)}
+        />
+
         <About ref={AboutRef} />
-        <div className=" relative py-20">
-          <Skills ref={SkillRef} />
-        </div>
+
+        <Skills ref={SkillRef} />
+
+        <Projects ref={ProjectRef} />
+        <Footer ref={ContactRef} />
       </main>
     </div>
   );

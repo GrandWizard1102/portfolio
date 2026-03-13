@@ -1,203 +1,149 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-// use your own icon import if react-icons is not available
 import { GoArrowUpRight } from "react-icons/go";
+import { X, Menu, Download } from "lucide-react";
 
 const CardNav = ({
   logo,
   logoAlt = "Logo",
   items,
   className = "",
-  ease = "power3.out",
-  baseColor = "#fff",
-  menuColor,
-  buttonBgColor,
-  buttonTextColor,
+  ease = "power4.inOut",
+  baseColor = "#ffffff",
+  menuColor = "#000000",
+  buttonBgColor = "#a855f7",
+  buttonTextColor = "#ffffff",
 }) => {
-  const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const navRef = useRef(null);
   const cardsRef = useRef([]);
   const tlRef = useRef(null);
 
+  // Height is slightly taller to give cards that "chunky" premium feel
   const calculateHeight = () => {
     const navEl = navRef.current;
-    if (!navEl) return 60; // Default to collapsed height
-
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    if (!navEl) return 64;
     const contentEl = navEl.querySelector(".card-nav-content");
-
     if (contentEl) {
       const wasVisible = contentEl.style.visibility;
       contentEl.style.visibility = "visible";
-      // We keep position absolute here to measure its true rendered height
-
       const contentHeight = contentEl.getBoundingClientRect().height;
       contentEl.style.visibility = wasVisible;
-
-      const topBar = 60;
-
-      // Total height = Header (60px) + the height of the content block
-      // We don't need to add manual padding because getBoundingClientRect()
-      // already includes the padding defined in your Tailwind classes (py-2).
-      return topBar + contentHeight;
+      return 64 + contentHeight;
     }
-
-    return 60;
+    return 64;
   };
+
   const createTimeline = () => {
     const navEl = navRef.current;
     if (!navEl) return null;
 
-    gsap.set(navEl, { height: 60, overflow: "hidden" });
-    gsap.set(cardsRef.current, { y: 50, opacity: 0 });
+    gsap.set(navEl, { height: 64 });
+    gsap.set(cardsRef.current, { y: 20, opacity: 0 });
 
     const tl = gsap.timeline({ paused: true });
-
     tl.to(navEl, {
       height: calculateHeight,
       duration: 0.4,
-      ease,
-    });
-
-    tl.to(
+      ease: "expo.out",
+    }).to(
       cardsRef.current,
-      { y: 0, opacity: 1, duration: 0.4, ease, stagger: 0.08 },
-      "-=0.1",
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.3,
+        stagger: 0.04,
+        ease: "power2.out",
+      },
+      "-=0.2",
     );
-
     return tl;
   };
 
   useLayoutEffect(() => {
-    const tl = createTimeline();
-    tlRef.current = tl;
-
-    return () => {
-      tl?.kill();
-      tlRef.current = null;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ease, items]);
-
-  useLayoutEffect(() => {
-    const handleResize = () => {
-      if (!tlRef.current) return;
-
-      if (isExpanded) {
-        const newHeight = calculateHeight();
-        gsap.set(navRef.current, { height: newHeight });
-
-        tlRef.current.kill();
-        const newTl = createTimeline();
-        if (newTl) {
-          newTl.progress(1);
-          tlRef.current = newTl;
-        }
-      } else {
-        tlRef.current.kill();
-        const newTl = createTimeline();
-        if (newTl) {
-          tlRef.current = newTl;
-        }
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isExpanded]);
+    tlRef.current = createTimeline();
+    return () => tlRef.current?.kill();
+  }, [items]);
 
   const toggleMenu = () => {
-    const tl = tlRef.current;
-    if (!tl) return;
     if (!isExpanded) {
-      setIsHamburgerOpen(true);
       setIsExpanded(true);
-      tl.play(0);
+      tlRef.current?.play();
     } else {
-      setIsHamburgerOpen(false);
-      tl.eventCallback("onReverseComplete", () => setIsExpanded(false));
-      tl.reverse();
-    }
-  };
-
-  const setCardRef = (i) => (el) => {
-    if (el) cardsRef.current[i] = el;
-    else {
-      // Clean up if element is unmounted
-      delete cardsRef.current[i];
+      tlRef.current
+        ?.reverse()
+        .eventCallback("onReverseComplete", () => setIsExpanded(false));
     }
   };
 
   return (
     <div
-      className={`card-nav-container absolute left-1/2 -translate-x-1/2 w-[90%] max-w-[800px] z-[99] top-[1.2em] md:top-[2em] ${className}`}
+      className={`fixed left-1/2 -translate-x-1/2 w-[94%] max-w-[1100px] z-[100] top-6 ${className}`}
     >
       <nav
         ref={navRef}
-        className={`card-nav ${isExpanded ? "open" : ""} block h-[60px] p-0 rounded-xl shadow-md relative overflow-hidden will-change-[height]`}
+        className="bg-white rounded-[1.8rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-black/5 overflow-hidden"
         style={{ backgroundColor: baseColor }}
       >
-        <div className="card-nav-top absolute inset-x-0 top-0 h-[60px] flex items-center justify-between p-2 pl-[1.1rem] z-[2]">
-          <div
-            className={`hamburger-menu ${isHamburgerOpen ? "open" : ""} group h-full flex flex-col items-center justify-center cursor-pointer gap-[6px] order-2 md:order-none`}
-            onClick={toggleMenu}
-            role="button"
-            aria-label={isExpanded ? "Close menu" : "Open menu"}
-            tabIndex={0}
-            style={{ color: menuColor || "#000" }}
-          >
-            <div
-              className={`hamburger-line w-[30px] h-[2px] bg-current transition-[transform,opacity,margin] duration-300 ease-linear [transform-origin:50%_50%] ${
-                isHamburgerOpen ? "translate-y-[4px] rotate-45" : ""
-              } group-hover:opacity-75`}
-            />
-            <div
-              className={`hamburger-line w-[30px] h-[2px] bg-current transition-[transform,opacity,margin] duration-300 ease-linear [transform-origin:50%_50%] ${
-                isHamburgerOpen ? "-translate-y-[4px] -rotate-45" : ""
-              } group-hover:opacity-75`}
-            />
-          </div>
-
-          <div className="logo-container flex items-center md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 order-1 md:order-none">
-            <img src={logo} alt={logoAlt} className="logo h-[28px]" />
-          </div>
-
+        {/* TOP BAR: Clean & Centered */}
+        <div className="h-[60px] flex items-center justify-between px-6 relative z-20 bg-white">
           <button
-            type="button"
-            className="card-nav-cta-button hidden md:inline-flex border-0 rounded-[calc(0.75rem-0.2rem)] px-4 items-center h-full font-medium cursor-pointer transition-colors duration-300"
+            onClick={toggleMenu}
+            className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-50 transition-colors"
+            style={{ color: menuColor }}
+          >
+            {isExpanded ? <X size={24} /> : <Menu size={24} />}
+          </button>
+
+          <div className="absolute left-1/2 -translate-x-1/2">
+            <img src={logo} alt={logoAlt} className="h-7 w-auto" />
+          </div>
+
+          <a
+            href="https://raw.githubusercontent.com/GrandWizard1102/My_resume/main/Resume%20(5).pdf"
+            download="Kavimani_Resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group px-4 py-2 rounded-xl font-bold text-[10px] uppercase tracking-wider flex items-center gap-2 transition-all hover:brightness-110 active:scale-95 shadow-sm"
             style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
           >
-            Resume
-          </button>
+            <span>Resume</span>
+            <Download
+              size={14}
+              className="transition-transform duration-300 group-hover:translate-y-0.5"
+            />
+          </a>
         </div>
 
+        {/* CARDS GRID: Based on your Image */}
         <div
-          className={`card-nav-content absolute left-0 right-0 top-[60px] px-4 py-2 flex flex-col h-auto gap-2 justify-start z-[1] ${
+          className={`card-nav-content flex px-3 pb-5 flex-col md:flex-row gap-2 ${
             isExpanded
               ? "visible pointer-events-auto"
               : "invisible pointer-events-none"
-          } md:flex-row md:items-start md:gap-[12px] bg-white`} // Added bg-white and tightened padding
-          aria-hidden={!isExpanded}
+          }`}
         >
-          {(items || []).slice(0, 4).map((item, idx) => (
-            <div
-              key={`${item.label}-${idx}`}
-              className="nav-card select-none relative flex flex-col gap-2 p-[12px_16px] rounded-[calc(0.75rem-0.2rem)] min-w-0 flex-[1_1_auto] h-auto  md:min-h-0 md:flex-[1_1_0%]"
-              ref={setCardRef(idx)}
-              style={{ backgroundColor: item.bgColor, color: item.textColor }}
+          {items?.slice(0, 5).map((item, idx) => (
+            <button
+              key={idx}
+              ref={(el) => (cardsRef.current[idx] = el)}
               onClick={() => {
-                if (item.onClick) {
-                  item.onClick();
-                  toggleMenu(); // Closes the GSAP tray after clicking
-                }
+                item.onClick?.();
+                toggleMenu();
+              }}
+              className="flex-1 group relative p-5 rounded-[1.2rem] flex flex-col justify-end text-left transition-all hover:brightness-105 active:scale-[0.98]"
+              style={{
+                backgroundColor: item.bgColor || "#a855f7",
+                color: item.textColor || "#ffffff",
               }}
             >
-              <div className="nav-card-label font-medium tracking-tight text-[18px] md:text-[22px]">
-                {item.label}
+              <div className="flex justify-between items-center w-full">
+                <span className="text-lg md:text-xl font-bold tracking-tight">
+                  {item.label}
+                </span>
+                <GoArrowUpRight className="text-xl transition-all duration-300 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </nav>
