@@ -100,7 +100,7 @@ const CardNav = ({
           </div>
 
           <a
-            href="https://raw.githubusercontent.com/GrandWizard1102/My_resume/main/Resume%20(5).pdf"
+            href="https://raw.githubusercontent.com/GrandWizard1102/My_resume/main/Resume%20(7).pdf"
             download="Kavimani_Resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
