@@ -6,12 +6,16 @@ import {
   Mail,
   Globe,
   Code2,
+  Phone, // Imported for the mobile icon
 } from "lucide-react";
 
 const Footer = forwardRef((props, ref) => {
   const currentYear = new Date().getFullYear();
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [currentTime, setCurrentTime] = useState("");
+
+  // Your existing phone number (replace with your actual number)
+  const phoneNumber = "+919345531196";
 
   useEffect(() => {
     const updateTime = () => {
@@ -55,12 +59,10 @@ const Footer = forwardRef((props, ref) => {
 
   return (
     <footer className="relative w-full py-10 px-6 mb-20 md:px-20" ref={ref}>
-      {/* GLASS CONTAINER */}
       <div
         onMouseMove={handleMouseMove}
         className="relative group max-w-7xl mx-auto rounded-[2rem] overflow-hidden p-8 md:p-12 transition-all duration-500 pointer-events-auto bg-white/[0.03] backdrop-blur-2xl border border-white/10 shadow-2xl"
       >
-        {/* Interactive Spotlight Effect */}
         <div
           className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"
           style={{
@@ -69,29 +71,46 @@ const Footer = forwardRef((props, ref) => {
         />
 
         <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
-          {/* Left Side: CTA */}
           <div className="flex-1">
             <h2 className="text-white text-3xl md:text-5xl font-black italic uppercase tracking-tighter mb-4 flex items-center gap-3">
               Get In <span className="text-purple-500">Touch</span>
             </h2>
-            <p className="text-gray-400 text-lg mb-6 max-w-md italic font-light">
+            <p className="text-gray-400 text-lg mb-8 max-w-md italic font-light">
               Looking for new opportunities. My inbox is always open.
             </p>
-            <a
-              href="https://mail.google.com/mail/?view=cm&fs=1&to=v.kavimani1106@gmail.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group/btn relative inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-full transition-all hover:scale-105 active:scale-95 overflow-hidden shadow-[0_0_20px_rgba(147,51,234,0.3)]"
-            >
-              <Mail
-                size={18}
-                className="group-hover/btn:translate-x-1 transition-transform"
-              />
-              <span>Send an Email</span>
-            </a>
+
+            {/* ACTION BUTTONS GROUP */}
+            <div className="flex flex-wrap gap-4">
+              {/* Email Button */}
+              <a
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=v.kavimani1106@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/btn relative inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-full transition-all hover:scale-105 active:scale-95 overflow-hidden shadow-[0_0_20px_rgba(147,51,234,0.3)]"
+              >
+                <Mail
+                  size={18}
+                  className="group-hover/btn:translate-x-1 transition-transform"
+                />
+                <span>Email Me</span>
+              </a>
+
+              {/* Mobile/WhatsApp Button */}
+              <a
+                href={`https://wa.me/${phoneNumber.replace("+", "")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/btn relative inline-flex items-center gap-2 bg-white/5 hover:bg-white/10 text-white border border-white/10 font-bold py-3 px-8 rounded-full transition-all hover:scale-105 active:scale-95 overflow-hidden"
+              >
+                <Phone
+                  size={18}
+                  className="text-purple-400 group-hover/btn:rotate-12 transition-transform"
+                />
+                <span>{phoneNumber}</span>
+              </a>
+            </div>
           </div>
 
-          {/* Right Side: Info & Socials */}
           <div className="flex flex-col gap-8 text-right items-start md:items-end w-full md:w-auto">
             <div className="flex flex-col items-start md:items-end gap-1">
               <div className="flex items-center gap-3 text-white/80">
@@ -118,7 +137,6 @@ const Footer = forwardRef((props, ref) => {
                   aria-label={social.name}
                 >
                   {social.icon}
-                  {/* Tooltip */}
                   <span className="absolute -top-10 left-1/2 -translate-x-1/2 px-2 py-1 bg-purple-600 text-white text-[10px] rounded opacity-0 group-hover/icon:opacity-100 transition-opacity pointer-events-none uppercase tracking-widest font-bold whitespace-nowrap z-50">
                     {social.name}
                   </span>
@@ -128,7 +146,6 @@ const Footer = forwardRef((props, ref) => {
           </div>
         </div>
 
-        {/* Bottom Bar */}
         <div className="relative z-10 mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-gray-500 text-[10px] font-mono uppercase tracking-[0.3em]">
             © {currentYear} Kavimani V. All Rights Reserved.
