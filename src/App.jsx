@@ -91,7 +91,7 @@ function App() {
       document.head.appendChild(newLink);
     }
   };
-  const Projects = () => {
+  const P = () => {
     useEffect(() => {
       document.title = "Kavimani V";
       updateFavicon(reactLogo);
@@ -144,6 +144,7 @@ function App() {
           onclick1={() => scrollTo(ProjectRef)}
           onclick2={() => scrollTo(ContactRef)}
         />
+        <P />
 
         <About ref={AboutRef} />
 
