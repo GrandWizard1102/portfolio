@@ -93,7 +93,7 @@ function App() {
   };
   const P = () => {
     useEffect(() => {
-      document.title = "Kavimani V";
+      document.title = "Kavimani V - Portfolio";
       updateFavicon(reactLogo);
     }, []);
   };

@@ -56,11 +56,12 @@ const Skills = forwardRef((props, ref) => {
       </h2>
 
       {/* Horizontal Scroll Container */}
-      <div className="flex flex-row overflow-x-auto w-full gap-8 py-10 no-scrollbar snap-x snap-mandatory pointer-events-auto">
+      <div className="flex flex-col md:flex-row overflow-x-auto w-full justify-center items-center gap-8 py-10 no-scrollbar snap-x snap-mandatory pointer-events-auto">
+        {" "}
         {stacks.map((stack, index) => (
           <div
             key={index}
-            className={`w-[220px] md:w-[300px] flex-none snap-center transition-all duration-700 ${
+            className={`w-[320px] md:w-[300px] flex-none snap-center transition-all duration-700 ${
               isVisible ? "animate-fade-up opacity-100" : "opacity-0"
             }`}
             style={{ animationDelay: `${index * 150}ms` }}
