@@ -6,6 +6,7 @@ import Home from "./screens/Home";
 import About from "./screens/About";
 import Skills from "./screens/Skills";
 import Projects from "./screens/Projects";
+import Profile from "./screens/Profile";
 import Footer from "./components/Footer";
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
 
   const HomeRef = useRef(null);
   const AboutRef = useRef(null);
+  const ProfileRef = useRef(null);
   const SkillRef = useRef(null);
   const ProjectRef = useRef(null);
   const ContactRef = useRef(null);
@@ -61,6 +63,12 @@ function App() {
       onClick: () => {
         scrollTo(SkillRef);
       },
+    },
+    {
+      label: "Coding Profile",
+      bgColor: "#aa5ef5",
+      textColor: "#fff",
+      onClick: () => scrollTo(ProfileRef),
     },
     {
       label: "Projects",
@@ -149,7 +157,7 @@ function App() {
         <About ref={AboutRef} />
 
         <Skills ref={SkillRef} />
-
+        <Profile ref={ProfileRef} />
         <Projects ref={ProjectRef} />
         <Footer ref={ContactRef} />
       </main>
