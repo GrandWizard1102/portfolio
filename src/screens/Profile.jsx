@@ -20,7 +20,7 @@ const Profile = forwardRef((props, ref) => {
           {/* LeetCode Card */}
           <div className="w-full md:w-1/2 p-3 md:p-5 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-2xl flex justify-center hover:scale-[1.02] transition-transform duration-300">
             <img
-              src={`https://leetcard.jacoblin.cool/${leetcodeUsername}?theme=unicorn&font=Kelly%20Slab&ext=heatmap`}
+              src={`https://leetcard.jacoblin.cool/${leetcodeUsername}?theme=unicorn&font=Kelly%20Slab&colors=0d0e15%2C161925%2Cf5f6fa%2Ca2a8cd%2Cff79c6%2Cbd93f9%2C8be9fd%2Cffb86c`}
               alt="LeetCode Stats"
               className="w-full h-auto rounded-xl"
               loading="lazy"
