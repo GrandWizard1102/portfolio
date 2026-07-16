@@ -1,50 +1,69 @@
 import { forwardRef } from "react";
 import { Github, ExternalLink } from "lucide-react";
-
 const projects = [
   {
     id: 1,
     title: "Tekhora '26",
     description:
-      "Official symposium website for the Department of Information Technology - AI & DS branch, MIT Anna University. Features event registration and real-time updates.",
+      "Official symposium website for the Department of Information Technology - AI & DS branch, MIT Anna University. Developed secure QR verification and dynamic routing for thousands of attendees.",
     tags: ["React", "Tailwind", "Production"],
     size: "large",
-    github: "https://github.com/Gojo-Satoru-git/AIA_SYMPO", // Add your repo link here
+    github: "https://github.com/Gojo-Satoru-git/AIA_SYMPO",
     live: "https://tekhora26.live",
   },
   {
     id: 2,
-    title: "Real-Time Blind Assist",
+    title: "E-Commerce Platform",
     description:
-      "Visual-to-Audio Scene Describer for the visually impaired using Deep Learning and CV.",
-    tags: ["Computer Vision", "Python", "Deep Learning"],
+      "A full-stack MERN application integrated with a machine learning-based recommendation engine to provide personalized product suggestions to users.",
+    tags: ["MongoDB", "Express", "React", "Node.js", "ML"],
     size: "small",
-    github: "",
-    live: "", // Both empty triggers "Coming Soon"
+    github: "https://github.com/GrandWizard1102/E-commerce",
+    live: "",
   },
   {
     id: 3,
-    title: "Weapon Detection",
+    title: "Movie Database System",
     description:
-      "Real-time threat detection system using HOG features and Flask deployment.",
-    tags: ["ML", "OpenCV"],
+      "Java Swing desktop application using JDBC for direct Oracle database connectivity. Built with advanced query features, ratings, and real-time CRUD operations.",
+    tags: ["Java", "Oracle SQL", "Swing", "JDBC"],
     size: "small",
-    github: "https://github.com/GrandWizard1102/Weapon-Detection",
-    live: "", // Only GitHub link
+    github: "https://github.com/GrandWizard1102/Movie_Project",
+    live: "",
   },
   {
     id: 4,
+    title: "Real-Time Blind Assist",
+    description:
+      "Visual-to-Audio Scene Describer for the visually impaired using YOLOv8, MiDaS depth estimation, BLIP, and text-to-speech audio feedback.",
+    tags: ["Computer Vision", "Python", "Deep Learning"],
+    size: "small",
+    github:
+      "https://github.com/GrandWizard1102/Real-Time-Assist-for-visually-Impaired",
+    live: "", // Both empty triggers "Coming Soon"
+  },
+  {
+    id: 5,
+    title: "Weapon Detection",
+    description:
+      "Real-time threat detection system using HOG features, OpenCV, and Flask deployment on Render.",
+    tags: ["ML", "OpenCV", "Flask"],
+    size: "small",
+    github: "https://github.com/GrandWizard1102/Weapon-Detection",
+    live: "",
+  },
+  {
+    id: 6,
     title: "Smart Grievance Redressal",
     description:
-      "Automated complaint tracking system built with the MERN stack.",
-    tags: ["MERN Stack", "AI"],
+      "Automated complaint tracking system built with the MERN stack to manage and resolve institutional grievances without overhead.",
+    tags: ["MERN Stack", "Tailwind"],
     size: "small",
     github:
       "https://github.com/GrandWizard1102/Smart-Grievance-redressal-system",
-    live: "", // Only GitHub link
+    live: "",
   },
 ];
-
 const Projects = forwardRef((props, ref) => {
   return (
     <section ref={ref} className="min-h-screen w-full py-20 px-6 md:px-20">
